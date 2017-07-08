@@ -78,13 +78,16 @@ def gitEnvVars() {
 def containerBuildPub(Map args) {
 
     println "Running Docker build/publish: ${args.host}/${args.acct}/${args.repo}:${args.tags}"
-
+    //Running Docker build/publish: briarregistry-microsoft.azurecr.io/chzbrgr71/go-guestbook:[master-ff6bc56, latest]
+      
     docker.withRegistry("https://${args.host}", "${args.auth_id}") {
 
         // def img = docker.build("${args.acct}/${args.repo}", args.dockerfile)
         def img = docker.image("${args.acct}/${args.repo}")
         sh "docker build --build-arg VCS_REF=${env.GIT_SHA} --build-arg BUILD_DATE=`date -u +'%Y-%m-%dT%H:%M:%SZ'` -t ${args.acct}/${args.repo} ${args.dockerfile}"
+        sh "docker images"
         for (int i = 0; i < args.tags.size(); i++) {
+            println "DEBUG CODE"
             img.push(args.tags.get(i))
         }
 
