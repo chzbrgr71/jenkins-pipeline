@@ -34,6 +34,7 @@ def helmDeploy(Map args) {
         sh "helm upgrade --dry-run --install ${args.name} ${args.chart_dir} --set imageTag=${args.version_tag},replicas=${args.replicas},cpu=${args.cpu},memory=${args.memory} --namespace=${args.namespace}"
     } else {
         println "Running deployment"
+        sh "helm ls"
         println "helm upgrade --install --wait ${args.name} ${args.chart_dir} --set imageTag=${args.version_tag},replicas=${args.replicas},cpu=${args.cpu},memory=${args.memory} --namespace=${args.namespace}"
         sh "helm upgrade --install --wait ${args.name} ${args.chart_dir} --set imageTag=${args.version_tag},replicas=${args.replicas},cpu=${args.cpu},memory=${args.memory} --namespace=${args.namespace}"
 
