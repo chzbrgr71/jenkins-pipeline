@@ -37,7 +37,7 @@ def helmDeploy(Map args) {
         println "Running deployment"
         println "CMD: helm upgrade --install --wait ${args.name} ${args.chart_dir} --set imageTag=${args.version_tag},replicas=${args.replicas},cpu=${args.cpu},memory=${args.memory}"
         //sh "helm upgrade --install --wait ${args.name} ${args.chart_dir} --set imageTag=${args.version_tag},replicas=${args.replicas},cpu=${args.cpu},memory=${args.memory} --namespace=${args.namespace}"
-        sh "helm upgrade --wait guestbook ${args.chart_dir} --set imageTag=${args.version_tag}"
+        sh "helm upgrade guestbook ${args.chart_dir} --set imageTag=${args.version_tag}"
 
         echo "Application ${args.name} successfully deployed. Use helm status ${args.name} to check"
     }
@@ -90,10 +90,10 @@ def containerBuildPub(Map args) {
         //println "${args.acct}/${args.repo}"
         //sh "docker build --build-arg VCS_REF=${env.GIT_SHA} --build-arg BUILD_DATE=`date -u +'%Y-%m-%dT%H:%M:%SZ'` -t ${args.acct}/${args.repo} ${args.dockerfile}"
         sh "docker build --build-arg VCS_REF=${env.GIT_SHA} -t ${args.acct}/${args.repo} ${args.dockerfile}"        
-        for (int i = 0; i < args.tags.size(); i++) {
-            img.push(args.tags.get(i))
-        }
-
+        //for (int i = 0; i < args.tags.size(); i++) {
+            //img.push(args.tags.get(i))
+        //}
+        img.push(args.tags.get(0))
         return img.id
     }
 }
